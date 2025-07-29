@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
-  discord-bot:
+  ane-x:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: discord-bot-container
+    container_name: ane-x
     env_file:
       - .env
