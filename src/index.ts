@@ -1,8 +1,25 @@
-import { Client, GatewayIntentBits, Partials } from 'discord.js';
+import { ApplicationCommandOptionType, REST, Routes, Client, Events, GatewayIntentBits, Partials, SnowflakeUtil, SlashCommandBuilder } from 'discord.js';
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
+const token = process.env.DISCORD_BOT_TOKEN || '';
+
+
+const commands = [new SlashCommandBuilder()
+.setName('x')
+.setDescription('x')
+.addStringOption(option =>
+    option
+        .setName('status')
+        .setDescription('status')
+        .setRequired(true)
+)
+.toJSON()];
+
+const rest = new REST({ version: '10' }).setToken(token);
+
+
 
 // Define the intents your bot needs
 const client = new Client({
@@ -15,28 +32,26 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user?.tag}!`);
-});
+client.once(Events.ClientReady, async () => {
 
-client.on('messageCreate', async message => {
-    if (message.author.bot || !message.content.startsWith('!')) {
-        return;
-    }
+    console.log(`${client.user?.tag} でログインしました。`);
+    try {
+        console.log('Started refreshing application (/) commands.');
 
-    const args = message.content.slice(1).trim().split(/ +/);
-    const command = args.shift()?.toLowerCase();
+        await rest.put(Routes.applicationCommands(client.user?.id || ''), { body: commands });
 
-    if (command === 'ping') {
-        message.reply('Pong!');
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error(error);
     }
 });
 
-const token = process.env.DISCORD_BOT_TOKEN;
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return;
 
-if (!token) {
-    console.error('Error: DISCORD_BOT_TOKEN is not set. Please set it in your .env file.');
-    process.exit(1);
-}
+  if (interaction.commandName === 'x') {
+    await interaction.reply('Pong!');
+  }
+});
 
 client.login(token);
