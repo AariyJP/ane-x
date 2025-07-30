@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: ane-x:latest
     container_name: ane-x
     env_file:
       - .env
