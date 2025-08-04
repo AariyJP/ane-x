@@ -1,0 +1,686 @@
+[
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "help",
+        "description": "ヘルプを表示します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "コマンド名",
+                "description": "指定されたコマンドの詳細なヘルプを表示します。"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "dice",
+        "description": "ダイス/サイコロを振ります。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 4,
+                "name": "最大値",
+                "description": "ダイスで出る最高の値",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "icon",
+        "description": "アバターを取得します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 6,
+                "name": "ユーザー",
+                "description": "アバターを取得するユーザー",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "ping",
+        "description": "ANEの応答速度/Pingを測定します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "slow",
+        "description": "テキストチャンネルのスローモードを管理します。(チャンネルの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 4,
+                "name": "秒数",
+                "description": "スローモード秒数",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "system",
+        "description": "ANEのシステムメッセージを追加します。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "invite",
+        "description": "//",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "server",
+                "description": "サーバーの無期限招待を作成してピン留めします。(招待を作成・メッセージの管理)"
+            },
+            {
+                "type": 1,
+                "name": "bot",
+                "description": "ボットのサーバー追加リンクを作成します。(なし)",
+                "options": [
+                    {
+                        "type": 6,
+                        "name": "ユーザー",
+                        "description": "招待リンクを生成するボット。未指定の場合はANE"
+                    }
+                ]
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "welcome",
+        "description": "現在のチャンネルを、よろしくメッセージを送信するチャンネルに設定します。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "si",
+        "description": "サーバー情報を表示します。(なし)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "ui",
+        "description": "ユーザー情報を表示します。(なし)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 6,
+                "name": "ユーザー",
+                "description": "情報を表示するユーザー",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "google",
+        "description": "Google検索結果を表示します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "検索ワード",
+                "description": "検索するワード",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "vote",
+        "description": "リアクション形式の投票を作成します。(リアクションの追加)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "選択肢a",
+                "description": "1番目の選択肢",
+                "required": true
+            },
+            {
+                "type": 3,
+                "name": "選択肢b",
+                "description": "2番目の選択肢"
+            },
+            {
+                "type": 3,
+                "name": "選択肢c",
+                "description": "3番目の選択肢"
+            },
+            {
+                "type": 3,
+                "name": "選択肢d",
+                "description": "4番目の選択肢"
+            },
+            {
+                "type": 3,
+                "name": "選択肢e",
+                "description": "5番目の選択肢"
+            },
+            {
+                "type": 3,
+                "name": "選択肢f",
+                "description": "6番目の選択肢"
+            },
+            {
+                "type": 3,
+                "name": "質問文",
+                "description": "質問の文章"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "embed",
+        "description": "埋め込みを使っていい感じのメッセージを成形して送信します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "タイトル",
+                "description": "埋め込みメッセージのタイトル表示",
+                "required": true
+            },
+            {
+                "type": 3,
+                "name": "内容",
+                "description": "埋め込みメッセージの内容表示",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "btn",
+        "description": "いい感じのボタンを生成します。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "url",
+                "description": "ボタンのリンク先url",
+                "required": true
+            },
+            {
+                "type": 3,
+                "name": "ラベル",
+                "description": "ボタンに表示されるテキスト",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "config",
+        "description": "ANEの設定を変更または表示します。(管理者)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "set",
+                "description": "ANEの設定を変更します。",
+                "options": [
+                    {
+                        "type": 3,
+                        "name": "項目",
+                        "description": "ANEの設定項目",
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "メッセージリンク展開",
+                                "value": "expand"
+                            },
+                            {
+                                "name": "アンチスパム",
+                                "value": "antispam"
+                            }
+                        ]
+                    },
+                    {
+                        "type": 5,
+                        "name": "値",
+                        "description": "設定値",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "type": 1,
+                "name": "view",
+                "description": "ANEの設定を表示します。"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "upnotify",
+        "description": "チャンネルのUP通知を管理します。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 5,
+                "name": "有効",
+                "description": "このチャンネルでUP通知を有効にするか。",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "report",
+        "description": "ANEの不具合や規約違反者を報告できます。(なし)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "webhook",
+        "description": "ウェブフックを管理します。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "view",
+                "description": "現在のチャンネルのウェブフックを表示します。(ウェブフックの管理)"
+            },
+            {
+                "type": 1,
+                "name": "add",
+                "description": "ウェブフックを作成します。(ウェブフックの管理)"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "antispam",
+        "description": "アンチスパムを管理します。メッセージの管理権限でこれを回避できます。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "bypass",
+                "description": "現在のチャンネルでアンチスパムを無効にします。(ウェブフックの管理)"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 3,
+        "name": "日本語に翻訳",
+        "description": "",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 3,
+        "name": "英語に翻訳",
+        "description": "",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 2,
+        "name": "アイコンURLを表示",
+        "description": "",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 3,
+        "name": "メッセージを引用",
+        "description": "",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "rp",
+        "description": "役職パネルを管理します。(ロールの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "add",
+                "description": "役職パネルにロールを追加します。(ロールの管理)",
+                "options": [
+                    {
+                        "type": 8,
+                        "name": "ロール",
+                        "description": "役職パネルに追加するロール",
+                        "required": true
+                    },
+                    {
+                        "type": 3,
+                        "name": "タイトル",
+                        "description": "役職パネルのタイトル(デフォルト：役職パネル)"
+                    }
+                ]
+            },
+            {
+                "type": 1,
+                "name": "remove",
+                "description": "役職パネルからロールを削除します。(ロールの管理)",
+                "options": [
+                    {
+                        "type": 8,
+                        "name": "ロール",
+                        "description": "役職パネルから削除するロール",
+                        "required": true
+                    },
+                    {
+                        "type": 3,
+                        "name": "タイトル",
+                        "description": "役職パネルのタイトル(デフォルト：役職パネル)"
+                    }
+                ]
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "ticket",
+        "description": "チケットツールを管理します。",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "setup",
+                "description": "現在のチャンネルをチケット窓口に設定します。(管理者)"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "gban",
+        "description": "ユーザーをBANした後、グローバルBANを申請します。(管理者)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 6,
+                "name": "ユーザー",
+                "description": "BANとグローバルBANの申請をするユーザー",
+                "required": true
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "verify",
+        "description": "認証パネルの設定をします。(ロールの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "setup",
+                "description": "現在のチャンネルに認証をセットアップします。",
+                "options": [
+                    {
+                        "type": 8,
+                        "name": "ロール",
+                        "description": "認証後に付与するロール",
+                        "required": true
+                    },
+                    {
+                        "type": 3,
+                        "name": "タイプ",
+                        "description": "認証方法のタイプ",
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "ボタン",
+                                "value": "ボタン"
+                            },
+                            {
+                                "name": "画像(実装予定)",
+                                "value": "画像"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "senden",
+        "description": "Aariy.NETで宣伝登録します。宣伝可能なチャンネルで実行してください。(ウェブフックの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "autorole",
+        "description": "サーバー参加時(ルールスクリーニング通過時)のロールを管理します。(ロールの管理)",
+        "dm_permission": false,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 8,
+                "name": "ロール",
+                "description": "付与するロール"
+            }
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "top",
+        "description": "（チャンネルの一番上で使うことを想定）ピン止めの固定メッセージを送信します。(管理者)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "nsfw": false
+    },
+    {
+        "default_member_permissions": null,
+        "type": 1,
+        "name": "clear",
+        "description": "メッセージを一括削除します。(メッセージの管理)",
+        "dm_permission": true,
+        "contexts": null,
+        "integration_types": [
+            0
+        ],
+        "options": [
+            {
+                "type": 1,
+                "name": "all",
+                "description": "全てのメッセージを削除します。(メッセージの管理)",
+                "options": [
+                    {
+                        "type": 4,
+                        "name": "メッセージ数",
+                        "description": "削除するメッセージ数(1-100)"
+                    }
+                ]
+            },
+            {
+                "type": 1,
+                "name": "my",
+                "description": "自分が送信したメッセージを削除します。",
+                "options": [
+                    {
+                        "type": 4,
+                        "name": "メッセージ数",
+                        "description": "削除するメッセージ数(1-100)"
+                    }
+                ]
+            }
+        ],
+        "nsfw": false
+    }
+]

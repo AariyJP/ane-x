@@ -6,9 +6,12 @@ import {
     GatewayIntentBits,
     Partials,
     SlashCommandBuilder,
+    ApplicationIntegrationType,
+    Collection
 } from "discord.js";
 import { TwitterApi } from "twitter-api-v2";
 import dotenv from "dotenv";
+import { execute as x } from "./commands/x";
 
 dotenv.config();
 const token = process.env.DISCORD_BOT_TOKEN || "";
@@ -25,14 +28,14 @@ process.on('uncaughtException', (err) => {
 });
 
 // const XApp = new TwitterApi({ clientId: clientId, clientSecret: clientSecret });
-const XApp = new TwitterApi({
+export const XApp = new TwitterApi({
     appKey: appKey,
     appSecret: appSecret,
     accessToken: accessToken,
     accessSecret: accessSecret,
 });
 
-const commands = [
+let commands = [
     new SlashCommandBuilder()
         .setName("x")
         .setDescription("x")
@@ -46,45 +49,89 @@ const commands = [
             option.setName("user").setDescription("user").setRequired(false)
         )
         .setDefaultMemberPermissions(0)
+        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
         .setName("xoauth2")
         .setDescription("xoauth2")
         .setDefaultMemberPermissions(0)
+        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
         .setName("xverify")
         .setDescription("xverify")
         .setDefaultMemberPermissions(0)
+        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
 ];
+commands =
+[
+    {
+        "default_member_permissions": "0",
+        "type": 1,
+        "name": "x",
+        "description": "x",
+        "dm_permission": true,
+        "integration_types": [
+            1
+        ],
+        "options": [
+            {
+                "type": 3,
+                "name": "status",
+                "description": "/",
+                "required": true
+            },
+            {
+                "type": 11,
+                "name": "image0",
+                "description": "/"
+            },
+                        {
+                "type": 11,
+                "name": "image1",
+                "description": "/"
+            },
+                        {
+                "type": 11,
+                "name": "image2",
+                "description": "/"
+            },
+                        {
+                "type": 11,
+                "name": "image3",
+                "description": "/"
+            },
+            {
+                "type": 4,
+                "name": "user",
+                "description": "/"
+            }
+        ],
+        "nsfw": false
+    }
+];
+
 const rest = new REST({ version: "10" }).setToken(token);
 
 // Define the intents your bot needs
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
-    ],
-    partials: [Partials.Channel],
-});
+export const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 client.once(Events.ClientReady, async () => {
     console.log(`${client.user?.tag} でログインしました。`);
-    try {
-        await rest.put(Routes.applicationCommands(client.user?.id || ""), {
-            body: commands,
-        });
-        console.log("アプリケーションコマンドを登録しました。");
-    } catch (error) {
-        console.error(error);
-    }
+    // try {
+    //     await rest.put(Routes.applicationCommands(client.user?.id || ""), {
+    //         body: commands,
+    //     });
+    //     console.log("アプリケーションコマンドを登録しました。");
+    // } catch (error) {
+    //     console.error(error);
+    // }
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
+    if (!interaction.isChatInputCommand() || (interaction.user.id !== "310554809910558720")) return;
+    console.log(interaction.commandName);
     switch (interaction.commandName) {
         case "xoauth2":
             // await interaction.reply(XApp.generateOAuth2AuthLink("http://localhost", {scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access']}).url)
@@ -93,12 +140,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
             // await interaction.reply("xverify command executed.")
             break;
         case "x":
-            await interaction.deferReply({ flags: "Ephemeral" });
-            const status = interaction.options.getString("status")!;
-            await interaction.editReply({content: status});
+            x(interaction);
             break;
         default:
-            await interaction.reply("Unknown command.");
+            await interaction.reply("❓ コマンドが見つかりません。");
             break;
     }
 });
