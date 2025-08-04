@@ -9,10 +9,11 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     .then(async (p) => {
         statusUrl += p.data.id;
         await interaction.editReply({ content: `✅ ${statusUrl}` });
+        const channel = interaction.channel as TextChannel;
+        channel.send({content: statusUrl});
     })
     .catch(async (e) => {
         await interaction.editReply({ content: "❌ " + e.message });
     });
-    const channel = interaction.channel as TextChannel;
-    channel.send({content: statusUrl});
+
 };
