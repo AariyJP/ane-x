@@ -2,14 +2,21 @@ import { REST, Routes, Client, Events, GatewayIntentBits, SlashCommandBuilder, A
 import { TwitterApi } from "twitter-api-v2";
 import dotenv from "dotenv";
 import { execute as x } from "./commands/x";
+import { commands } from "./commands/builder";
+
+// プロセス初期化
 
 dotenv.config();
+process.on("uncaughtException", (err) => {
+    console.error(err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+});
 
-// Map to store user tokens
-const userTokens: Map<string, { oauth_token: string; oauth_token_secret: string }> = new Map();
+// X初期化
 
-const token = process.env.DISCORD_BOT_TOKEN || "";
-const xtoken = process.env.X_BEARER_TOKEN || "";
+const bearerToken = process.env.X_BEARER_TOKEN || "";
 const clientId = process.env.X_CLIENT_ID || "";
 const clientSecret = process.env.X_CLIENT_SECRET || "";
 const appKey = process.env.X_APP_KEY || "";
@@ -17,11 +24,6 @@ const appSecret = process.env.X_APP_SECRET || "";
 const accessToken = process.env.X_ACCESS_TOKEN || "";
 const accessSecret = process.env.X_ACCESS_SECRET || "";
 
-process.on("uncaughtException", (err) => {
-    console.error(err);
-});
-
-// const XApp = new TwitterApi({ clientId: clientId, clientSecret: clientSecret });
 export const XApp = new TwitterApi({
     appKey: appKey,
     appSecret: appSecret,
@@ -29,68 +31,28 @@ export const XApp = new TwitterApi({
     accessSecret: accessSecret,
 });
 
-const commands = [
-    new SlashCommandBuilder()
-        .setName("x")
-        .setDescription("x")
-        .addStringOption((option) => option.setName("status").setDescription("/").setRequired(true))
-        .addAttachmentOption((option) => option.setName("image0").setDescription("/"))
-        .addAttachmentOption((option) => option.setName("image1").setDescription("/"))
-        .addAttachmentOption((option) => option.setName("image2").setDescription("/"))
-        .addAttachmentOption((option) => option.setName("image3").setDescription("/"))
-        .addIntegerOption((option) => option.setName("user").setDescription("/"))
-        .setDefaultMemberPermissions(0)
-        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        .toJSON(),
-    new SlashCommandBuilder()
-        .setName("xoauth")
-        .setDescription("/")
-        .setDefaultMemberPermissions(0)
-        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        .toJSON(),
-    new SlashCommandBuilder()
-        .setName("xoauth2")
-        .setDescription("/")
-        .setDefaultMemberPermissions(0)
-        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        .toJSON(),
-    new SlashCommandBuilder()
-        .setName("xverify")
-        .setDescription("/")
-        .setDefaultMemberPermissions(0)
-        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        // .addStringOption((option) => option.setName("oauth_token").setDescription("/").setRequired(true))
-        // .addStringOption((option) => option.setName("oauth_token_secret").setDescription("/").setRequired(true))
-        .addStringOption((option) => option.setName("oauth_verifier").setDescription("/").setRequired(true))
-        .toJSON(),
-    new SlashCommandBuilder()
-        .setName("register-commands")
-        .setDescription("/")
-        .setDefaultMemberPermissions(0)
-        .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        .toJSON(),
-];
-console.log(`\n${JSON.stringify(commands)}\n`);
+// Discord初期化
 
-const rest = new REST({ version: "10" }).setToken(token);
+const botToken = process.env.DISCORD_BOT_TOKEN || "";
 
-// Define the intents your bot needs
-export const client = new Client({
-    intents: [],
+const userTokens: Map<string, { oauth_token: string; oauth_token_secret: string }> = new Map();
+
+export const DApp = new Client({
+    intents: [GatewayIntentBits.Guilds],
 });
 
-client.once(Events.ClientReady, async () => {
-    console.log(`${client.user?.tag} でログインしました。`);
+DApp.once(Events.ClientReady, async () => {
+    console.log(`${DApp.user?.tag} でログインしました。`);
 });
 
-client.on(Events.InteractionCreate, async (interaction) => {
+DApp.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand() || interaction.user.id !== "310554809910558720") return;
     console.log(interaction.commandName);
     switch (interaction.commandName) {
         case "register-commands":
             interaction.deferReply({ flags: MessageFlags.Ephemeral });
             try {
-                await rest.put(Routes.applicationCommands(client.user?.id || ""), {
+                await new REST({ version: "10" }).setToken(botToken).put(Routes.applicationCommands(DApp.user?.id || ""), {
                     body: commands,
                 });
                 await interaction.editReply({ content: "✅ コマンドを登録しました。" });
@@ -147,4 +109,4 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
-client.login(token);
+DApp.login(botToken);
