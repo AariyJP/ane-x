@@ -1,0 +1,86 @@
+[
+    {
+        "options": [
+            {
+                "type": 3,
+                "name": "status",
+                "description": "/",
+                "required": true
+            },
+            {
+                "name": "image0",
+                "description": "/",
+                "required": false,
+                "type": 11
+            },
+            {
+                "name": "image1",
+                "description": "/",
+                "required": false,
+                "type": 11
+            },
+            {
+                "name": "image2",
+                "description": "/",
+                "required": false,
+                "type": 11
+            },
+            {
+                "name": "image3",
+                "description": "/",
+                "required": false,
+                "type": 11
+            },
+            {
+                "type": 4,
+                "name": "user",
+                "description": "/",
+                "required": false
+            }
+        ],
+        "name": "x",
+        "description": "x",
+        "default_member_permissions": "0",
+        "integration_types": [
+            1
+        ],
+        "type": 1
+    },
+    {
+        "options": [],
+        "name": "xoauth",
+        "description": "/",
+        "default_member_permissions": "0",
+        "integration_types": [
+            1
+        ],
+        "type": 1
+    },
+    {
+        "options": [],
+        "name": "xoauth2",
+        "description": "/",
+        "default_member_permissions": "0",
+        "integration_types": [
+            1
+        ],
+        "type": 1
+    },
+    {
+        "options": [
+            {
+                "type": 3,
+                "name": "verifier",
+                "description": "/",
+                "required": true
+            }
+        ],
+        "name": "xverify",
+        "description": "/",
+        "default_member_permissions": "0",
+        "integration_types": [
+            1
+        ],
+        "type": 1
+    }
+]
