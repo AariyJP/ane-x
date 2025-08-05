@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 import { execute as x } from "./commands/x";
 
 dotenv.config();
+
+// Map to store user tokens
+const userTokens: Map<string, { oauth_token: string; oauth_token_secret: string }> = new Map();
+
 const token = process.env.DISCORD_BOT_TOKEN || "";
 const xtoken = process.env.X_BEARER_TOKEN || "";
 const clientId = process.env.X_CLIENT_ID || "";
@@ -55,8 +59,8 @@ const commands = [
         .setDescription("/")
         .setDefaultMemberPermissions(0)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
-        .addStringOption((option) => option.setName("oauth_token").setDescription("/").setRequired(true))
-        .addStringOption((option) => option.setName("oauth_token_secret").setDescription("/").setRequired(true))
+        // .addStringOption((option) => option.setName("oauth_token").setDescription("/").setRequired(true))
+        // .addStringOption((option) => option.setName("oauth_token_secret").setDescription("/").setRequired(true))
         .addStringOption((option) => option.setName("oauth_verifier").setDescription("/").setRequired(true))
         .toJSON(),
     new SlashCommandBuilder()
@@ -84,37 +88,61 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.log(interaction.commandName);
     switch (interaction.commandName) {
         case "register-commands":
-            interaction.deferReply({ flags: MessageFlags.Ephemeral  });
+            interaction.deferReply({ flags: MessageFlags.Ephemeral });
             try {
                 await rest.put(Routes.applicationCommands(client.user?.id || ""), {
                     body: commands,
                 });
-                interaction.editReply({ content: "✅ コマンドを登録しました。"});
+                await interaction.editReply({ content: "✅ コマンドを登録しました。" });
             } catch (error) {
-                interaction.editReply({ content: `${error}`});
+                await interaction.editReply({ content: `${error}` });
             }
             return;
         case "xoauth":
             let authLink = await XApp.generateAuthLink("http://localhost");
-            await interaction.reply({content:`${authLink.url}\n${authLink.oauth_token}\n${authLink.oauth_token_secret}`, flags: MessageFlags.Ephemeral});
+            // Store the tokens in the map
+            userTokens.set(interaction.user.id, {
+                oauth_token: authLink.oauth_token,
+                oauth_token_secret: authLink.oauth_token_secret,
+            });
+            await interaction.reply({
+                content: `${authLink.url}\n\`\`\`\n${authLink.oauth_token}\n${authLink.oauth_token_secret}\`\`\``,
+                flags: MessageFlags.Ephemeral,
+            });
             return;
         case "xverify":
-            const { client: userClient } = await await new TwitterApi({
-            appKey: appKey,
-            appSecret: appSecret,
-            accessToken: interaction.options.getString("oauth_token") || "",
-            accessSecret: interaction.options.getString("oauth_token_secret") || "",
-        }).login(interaction.options.getString("oauth_verifier") || "");
-            await interaction.reply({
-                content: `✅ ${JSON.stringify(userClient.getActiveTokens())}`,
-                flags: MessageFlags.Ephemeral,
+            if(!userTokens.has(interaction.user.id)) {
+                await interaction.reply({
+                    content: "❌ `/xoauth`コマンドを実行してトークンを取得してください。",
+                    flags: MessageFlags.Ephemeral,
+                })
+                return
+            };
+            new TwitterApi({
+                appKey: appKey,
+                appSecret: appSecret,
+                accessToken: userTokens.get(interaction.user.id)?.oauth_token,
+                accessSecret: userTokens.get(interaction.user.id)?.oauth_token_secret,
+            })
+            .login(interaction.options.getString("oauth_verifier") || "")
+            .then(async (result) => {
+                await interaction.reply({
+                    content: `\`\`\`\n${JSON.stringify(result.client.getActiveTokens())}\`\`\``,
+                    flags: MessageFlags.Ephemeral,
+                });
+            }
+            ).catch(async (error) => {
+                await interaction.reply({
+                    content: `❌ ${error}`,
+                    flags: MessageFlags.Ephemeral,
+                });
             });
             return;
         case "x":
             x(interaction);
             return;
         default:
-            await interaction.reply({content: "❓ コマンドが見つかりません。", flags: MessageFlags.Ephemeral});
+            await interaction.reply({ content: "❓ コマンドが見つかりません。", flags: MessageFlags.Ephemeral });
             return;
     }
 });
