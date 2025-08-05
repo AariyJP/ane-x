@@ -3,7 +3,7 @@ import { SlashCommandBuilder, ApplicationIntegrationType } from "discord.js";
 export const commands = [
     new SlashCommandBuilder()
         .setName("x")
-        .setDescription("x")
+        .setDescription("/")
         .addStringOption((option) => option.setName("status").setDescription("/").setRequired(true))
         .addAttachmentOption((option) => option.setName("image0").setDescription("/"))
         .addAttachmentOption((option) => option.setName("image1").setDescription("/"))
@@ -14,19 +14,19 @@ export const commands = [
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
-        .setName("xoauth")
+        .setName("oauth1")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
-        .setName("xoauth2")
+        .setName("oauth2")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
-        .setName("xverify")
+        .setName("verify1")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
@@ -35,7 +35,7 @@ export const commands = [
         .addStringOption((option) => option.setName("oauth_verifier").setDescription("/").setRequired(true))
         .toJSON(),
     new SlashCommandBuilder()
-        .setName("register-commands")
+        .setName("register")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)

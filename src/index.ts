@@ -42,6 +42,17 @@ export const DApp = new Client({
 });
 
 DApp.once(Events.ClientReady, async () => {
+    console.log(JSON.stringify(commands))
+    if(process.env.D_REGISTER_COMMANDS === "true") {
+        try {
+            await new REST({ version: "10" }).setToken(botToken).put(Routes.applicationCommands(DApp.application?.id || ""), {
+                body: commands,
+            });
+            console.log("✅ コマンドを登録しました。");
+        } catch (error) {
+            console.error("❌ ", error);
+        }
+    }
     console.log(`${DApp.user?.tag} でログインしました。`);
 });
 
@@ -49,10 +60,10 @@ DApp.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand() || interaction.user.id !== "310554809910558720") return;
     console.log(interaction.commandName);
     switch (interaction.commandName) {
-        case "register-commands":
+        case "register":
             interaction.deferReply({ flags: MessageFlags.Ephemeral });
             try {
-                await new REST({ version: "10" }).setToken(botToken).put(Routes.applicationCommands(DApp.user?.id || ""), {
+                await new REST({ version: "10" }).setToken(botToken).put(Routes.applicationCommands(DApp.application?.id || ""), {
                     body: commands,
                 });
                 await interaction.editReply({ content: "✅ コマンドを登録しました。" });
@@ -60,7 +71,7 @@ DApp.on(Events.InteractionCreate, async (interaction) => {
                 await interaction.editReply({ content: `${error}` });
             }
             return;
-        case "xoauth":
+        case "oauth1":
             let authLink = await XApp.generateAuthLink("http://localhost");
             // Store the tokens in the map
             userTokens.set(interaction.user.id, {
@@ -72,7 +83,7 @@ DApp.on(Events.InteractionCreate, async (interaction) => {
                 flags: MessageFlags.Ephemeral,
             });
             return;
-        case "xverify":
+        case "verify1":
             if(!userTokens.has(interaction.user.id)) {
                 await interaction.reply({
                     content: "❌ `/xoauth`コマンドを実行してトークンを取得してください。",

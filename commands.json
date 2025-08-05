@@ -39,16 +39,6 @@
             }
         ],
         "name": "x",
-        "description": "x",
-        "default_member_permissions": "0",
-        "integration_types": [
-            1
-        ],
-        "type": 1
-    },
-    {
-        "options": [],
-        "name": "xoauth",
         "description": "/",
         "default_member_permissions": "0",
         "integration_types": [
@@ -58,7 +48,17 @@
     },
     {
         "options": [],
-        "name": "xoauth2",
+        "name": "oauth1",
+        "description": "/",
+        "default_member_permissions": "0",
+        "integration_types": [
+            1
+        ],
+        "type": 1
+    },
+    {
+        "options": [],
+        "name": "oauth2",
         "description": "/",
         "default_member_permissions": "0",
         "integration_types": [
@@ -75,7 +75,7 @@
                 "required": true
             }
         ],
-        "name": "xverify",
+        "name": "verify1",
         "description": "/",
         "default_member_permissions": "0",
         "integration_types": [
@@ -85,7 +85,7 @@
     },
     {
         "options": [],
-        "name": "register-commands",
+        "name": "register",
         "description": "/",
         "default_member_permissions": "0",
         "integration_types": [
