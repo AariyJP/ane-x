@@ -1,8 +1,8 @@
 import { REST, Routes, Client, Events, GatewayIntentBits, SlashCommandBuilder, ApplicationIntegrationType, MessageFlags } from "discord.js";
 import { TwitterApi } from "twitter-api-v2";
 import dotenv from "dotenv";
-import { execute as x } from "./commands/x";
-import { commands } from "./commands/builder";
+import { execute as x } from "./commands/x.js";
+import { commands } from "./commands/builder.js";
 
 // プロセス初期化
 
