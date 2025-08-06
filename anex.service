@@ -1,7 +1,7 @@
 [Service]
 Type=simple
 WorkingDirectory=/root/ane-x/
-ExecStart=node dist/index.js
+ExecStart=/root/.nvm/versions/node/v22.14.0/bin/node dist/index.js
 ExecStop=/bin/kill -WINCH ${MAINPID}
 Restart=always
 StandardOutput=append:/root/ane-x/inf.log
