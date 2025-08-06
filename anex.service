@@ -1,0 +1,11 @@
+[Service]
+Type=simple
+WorkingDirectory=/root/ane-x/
+ExecStart=node dist/index.js
+ExecStop=/bin/kill -WINCH ${MAINPID}
+Restart=always
+StandardOutput=append:/root/ane-x/inf.log
+StandardError=append:/root/ane-x/err.log
+
+[Install]
+WantedBy=multi-user.target
