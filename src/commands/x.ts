@@ -1,11 +1,11 @@
 import { ChatInputCommandInteraction, DMChannel, MessageFlags, NewsChannel, SendableChannels, TextChannel } from "discord.js";
-import { XApp } from "../index.js";
+import { XApp, XMe } from "../index.js";
 import { EUploadMimeType, SendTweetV2Params } from "twitter-api-v2";
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const status = interaction.options.getString("status")?.replace(";", "\n") || "";
-    let statusUrl = `https://x.com/${(await XApp.v2.me()).data.username}/status/`;
+    let statusUrl = `https://x.com/${XMe.data.username}/status/`;
     let mediaIds: string[] = [];
     for (let i = 0; i < 4; i++) {
         const image = interaction.options.getAttachment(`image${i}`);
