@@ -114,9 +114,6 @@ DApp.on(Events.InteractionCreate, async (interaction) => {
         case "x":
             x(interaction);
             return;
-        default:
-            await interaction.reply({ content: "❓ コマンドが見つかりません。", flags: MessageFlags.Ephemeral });
-            return;
     }
 });
 
