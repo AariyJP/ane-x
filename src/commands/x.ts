@@ -1,11 +1,21 @@
 import { ChatInputCommandInteraction, DMChannel, MessageFlags, NewsChannel, SendableChannels, TextChannel } from "discord.js";
-import { XApp, XMe } from "../index.js";
-import { EUploadMimeType, SendTweetV2Params } from "twitter-api-v2";
+import { XApp, XApp1 } from "../index.js";
+import { EUploadMimeType, SendTweetV2Params, TwitterApi } from "twitter-api-v2";
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+    const X: TwitterApi = (() => {
+        switch (interaction.options.getNumber("user", false)) {
+            case 0 :
+                return XApp;
+            case 1 :
+                return XApp1;
+            default :
+                return XApp;
+        }
+    })();
     const status = interaction.options.getString("status")?.replace(";", "\n") || "";
-    let statusUrl = `https://x.com/${XMe.data.username}/status/`;
+    let statusUrl = `https://x.com/${(await X.currentUserV2()).data.username}/status/`;
     let mediaIds: string[] = [];
     for (let i = 0; i < 4; i++) {
         const image = interaction.options.getAttachment(`image${i}`);
@@ -24,7 +34,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
                 await interaction.reply({ content:`⚠️ [image${i}]\n${image.contentType}形式はサポートされていません。`});
                 continue;
             }
-            const mediaId = await XApp.v2.uploadMedia(buffer, {
+            const mediaId = await X.v2.uploadMedia(buffer, {
                 media_type: mediaType,
             });
             mediaIds.push(mediaId);
@@ -41,7 +51,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
             media_ids: mediaIds.slice(0, 4) as [string] | [string, string] | [string, string, string] | [string, string, string, string],
         };
     }
-    XApp.v2
+    X.v2
         .tweet(payload)
         .then(async (p) => {
             statusUrl += p.data.id;
