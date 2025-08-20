@@ -1,4 +1,4 @@
-import { REST, Routes, Client, Events, GatewayIntentBits, SlashCommandBuilder, ApplicationIntegrationType, MessageFlags } from "discord.js";
+import { REST, Routes, Client, Events, GatewayIntentBits, SlashCommandBuilder, ApplicationIntegrationType, MessageFlags, SendableChannels } from "discord.js";
 import { TwitterApi } from "twitter-api-v2";
 import dotenv from "dotenv";
 import { execute as x } from "./commands/x.js";
@@ -88,6 +88,9 @@ DApp.on(Events.InteractionCreate, async (interaction) => {
                 oauth_token: authLink.oauth_token,
                 oauth_token_secret: authLink.oauth_token_secret,
             });
+            // await (interaction.channel as SendableChannels).send({
+            //     content: `${authLink.url}\n\`\`\`\n${authLink.oauth_token}\n${authLink.oauth_token_secret}\`\`\``
+            // });
             await interaction.reply({
                 content: `${authLink.url}\n\`\`\`\n${authLink.oauth_token}\n${authLink.oauth_token_secret}\`\`\``,
                 flags: MessageFlags.Ephemeral,
