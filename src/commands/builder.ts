@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ApplicationIntegrationType } from "discord.js";
+import { SlashCommandBuilder, ApplicationIntegrationType, InteractionContextType } from "discord.js";
 
 export const commands = [
     new SlashCommandBuilder()
@@ -11,24 +11,28 @@ export const commands = [
         .addAttachmentOption((option) => option.setName("image3").setDescription("/"))
         .addIntegerOption((option) => option.setName("user").setDescription("/"))
         .setDefaultMemberPermissions(0)
+        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
         .setName("oauth1")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
+        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
         .setName("oauth2")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
+        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
     new SlashCommandBuilder()
         .setName("verify1")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
+        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         // .addStringOption((option) => option.setName("oauth_token").setDescription("/").setRequired(true))
         // .addStringOption((option) => option.setName("oauth_token_secret").setDescription("/").setRequired(true))
@@ -38,6 +42,7 @@ export const commands = [
         .setName("register")
         .setDescription("/")
         .setDefaultMemberPermissions(0)
+        .setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
         .setIntegrationTypes(ApplicationIntegrationType.UserInstall)
         .toJSON(),
 ];
