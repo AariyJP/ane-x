@@ -36,9 +36,9 @@ export const XApp1 = new TwitterApi({
     accessToken: accessToken.split(",")[1],
     accessSecret: accessSecret.split(",")[1],
 });
-// export const XMe = await XApp.currentUserV2();
+//export const XMe = await XApp.currentUserV2();
 // export const XMe1 = await XApp1.currentUserV2();
-// console.log(JSON.stringify(XMe));
+//console.log(JSON.stringify(XMe));
 // console.log(JSON.stringify(XMe1));
 
 // Discord初期化

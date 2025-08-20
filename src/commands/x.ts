@@ -5,12 +5,14 @@ import { EUploadMimeType, SendTweetV2Params, TwitterApi } from "twitter-api-v2";
 export const execute = async (interaction: ChatInputCommandInteraction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const X: TwitterApi = (() => {
-        switch (interaction.options.getNumber("user", false)) {
+        switch (interaction.options.getInteger("user", false)) {
             case 0 :
                 return XApp;
             case 1 :
                 return XApp1;
-            default :
+            case null :
+                return XApp;
+            default:
                 return XApp;
         }
     })();
