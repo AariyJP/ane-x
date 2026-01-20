@@ -3,7 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ane-x:latest
+    image: nrt.vultrcr.com/anet/ane-x:latest
     container_name: ane-x
     env_file:
       - .env
+    restart: always
