@@ -28,21 +28,28 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
             const arrayBuffer = await response.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
             let mediaType: EUploadMimeType;
-            if (image.contentType === "image/png") {
+            const contentType = image.contentType?.toLowerCase() || "";
+
+            if (contentType.includes("png")) {
                 mediaType = EUploadMimeType.Png;
-            } else if (image.contentType === "image/jpeg") {
+            } else if (contentType.includes("jpeg") || contentType.includes("jpg")) {
                 mediaType = EUploadMimeType.Jpeg;
+            } else if (contentType.includes("gif")) {
+                mediaType = EUploadMimeType.Gif;
+            } else if (contentType.includes("webp")) {
+                mediaType = EUploadMimeType.Webp;
             } else {
-                // await interaction.followUp({ content:`⚠️ [image${i}]\n${image.contentType}形式はサポートされていません。`, flags: MessageFlags.Ephemeral });
+                await interaction.followUp({ content:`⚠️ [image${i}]\n${image.contentType}形式はサポートされていません。`, flags: MessageFlags.Ephemeral });
                 continue;
             }
+
             const mediaId = await X.v1.uploadMedia(buffer, {
                 mimeType: mediaType,
             });
             mediaIds.push(mediaId);
-        } catch (error) {
+        } catch (error: any) {
             console.error(`Error uploading image ${i}:`, error);
-            // await interaction.followUp({content: `⚠️ [image${i}]\n${error}`, flags: MessageFlags.Ephemeral});
+            await interaction.followUp({content: `⚠️ [image${i}] アップロード中にエラーが発生しました。\n${error.message || error}`, flags: MessageFlags.Ephemeral});
             continue;
         }
     }

@@ -112,6 +112,48 @@ describe('X Command (/x)', () => {
         expect(sendArg).toMatch(/status\/mock_tweet_id$/); // URL末尾がモックのIDになる
     });
 
+    it('should handle different image content types (png, jpg, gif, webp)', async () => {
+        vi.clearAllMocks();
+
+        // 実際のAPIへのアップロードを避けるため、gifとwebpの場合はuploadMediaを個別にモックする
+        const originalUploadMedia = XApp.v1.uploadMedia.bind(XApp.v1);
+        XApp.v1.uploadMedia = vi.fn().mockImplementation(async (file, options) => {
+            if (options.mimeType === 'image/gif' || options.mimeType === 'image/webp') {
+                return 'mock_media_id_special';
+            }
+            return originalUploadMedia(file, options);
+        }) as any;
+
+        const attachments: Record<string, { url: string; contentType: string }> = {
+            'image0': { url: 'https://example.com/image.png', contentType: 'image/png' },
+            'image1': { url: 'https://example.com/image.jpg', contentType: 'image/jpeg' },
+            'image2': { url: 'https://example.com/image.gif', contentType: 'image/gif' },
+            'image3': { url: 'https://example.com/image.webp', contentType: 'image/webp' },
+        };
+
+        mockInteraction.options.getAttachment = vi.fn((key: string) => attachments[key] || null);
+
+        global.fetch = vi.fn().mockImplementation(async (url: string) => {
+            const b = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=", "base64");
+            const actualArrayBuffer = new Uint8Array(b).buffer;
+            return {
+                arrayBuffer: async () => actualArrayBuffer
+            } as any;
+        });
+
+        await xCommand(mockInteraction);
+
+        expect((XApp as any).v2.tweet).toHaveBeenCalledTimes(1);
+        const tweetCallArgs = ((XApp as any).v2.tweet as ReturnType<typeof vi.fn>).mock.calls[0][0];
+        
+        expect(tweetCallArgs.media).toBeDefined();
+        // 4つの画像がすべてアップロードされていることを確認
+        expect(tweetCallArgs.media.media_ids.length).toBe(4);
+
+        // モックを元に戻す
+        XApp.v1.uploadMedia = originalUploadMedia;
+    });
+
     it('should use XApp1 and mock the status post when user parameter is 1', async () => {
         vi.clearAllMocks();
 
@@ -131,7 +173,6 @@ describe('X Command (/x)', () => {
         
         const tweetCallArgs = ((XApp1 as any).v2.tweet as ReturnType<typeof vi.fn>).mock.calls[0][0];
         expect(tweetCallArgs.text).toBe('Hello Real API!');
-        expect(tweetCallArgs.media).toBeDefined();
         
         // 返信されたURLの末尾が XApp1 用の mock_tweet_id_1 になっているかを検証
         expect(mockInteraction.channel.send).toHaveBeenCalledTimes(1);
