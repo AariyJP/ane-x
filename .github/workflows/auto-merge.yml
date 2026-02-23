@@ -3,7 +3,6 @@ name: Auto Merge PR
 on:
   pull_request:
     types:
-      - opened
       - labeled
     branches:
       - main
