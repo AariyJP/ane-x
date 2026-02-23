@@ -36,11 +36,12 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
                 // await interaction.followUp({ content:`⚠️ [image${i}]\n${image.contentType}形式はサポートされていません。`, flags: MessageFlags.Ephemeral });
                 continue;
             }
-            const mediaId = await X.v2.uploadMedia(buffer, {
-                media_type: mediaType,
+            const mediaId = await X.v1.uploadMedia(buffer, {
+                mimeType: mediaType,
             });
             mediaIds.push(mediaId);
         } catch (error) {
+            console.error(`Error uploading image ${i}:`, error);
             // await interaction.followUp({content: `⚠️ [image${i}]\n${error}`, flags: MessageFlags.Ephemeral});
             continue;
         }
