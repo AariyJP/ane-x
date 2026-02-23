@@ -20,14 +20,23 @@ vi.mock('../index.js', async (importOriginal) => {
     // 「postはしないで」という要望に応えるためtweet関数だけモックにすり替え
     app.v2.tweet = vi.fn().mockResolvedValue({ data: { id: 'mock_tweet_id' } }) as any;
     
+    // XApp1用にもう一つのモックアプリを作成
+    const app1 = new TwitterApi({
+        appKey: process.env.X_APP_KEY || "",
+        appSecret: process.env.X_APP_SECRET || "",
+        accessToken: process.env.X_ACCESS_TOKEN || "",
+        accessSecret: process.env.X_ACCESS_SECRET || "",
+    });
+    app1.v2.tweet = vi.fn().mockResolvedValue({ data: { id: 'mock_tweet_id_1' } }) as any;
+
     return {
         XApp: app,
-        XApp1: app
+        XApp1: app1
     };
 });
 
 import { execute as xCommand } from './x.js';
-import { XApp } from '../index.js';
+import { XApp, XApp1 } from '../index.js';
 import { MessageFlags } from 'discord.js';
 
 describe('X Command (/x)', () => {
@@ -101,5 +110,32 @@ describe('X Command (/x)', () => {
         expect(mockInteraction.channel.send).toHaveBeenCalledTimes(1);
         const sendArg = mockInteraction.channel.send.mock.calls[0][0];
         expect(sendArg).toMatch(/status\/mock_tweet_id$/); // URL末尾がモックのIDになる
+    });
+
+    it('should use XApp1 and mock the status post when user parameter is 1', async () => {
+        vi.clearAllMocks();
+
+        // ユーザーオプションを 1 に変更
+        mockInteraction.options.getInteger.mockReturnValue(1);
+
+        // コマンドを実行
+        await xCommand(mockInteraction);
+
+        // --- アサーション（検証） ---
+
+        // XApp (user 0) は呼ばれていないはず
+        expect((XApp as any).v2.tweet).not.toHaveBeenCalled();
+
+        // XApp1 (user 1) が呼ばれているはず
+        expect((XApp1 as any).v2.tweet).toHaveBeenCalledTimes(1);
+        
+        const tweetCallArgs = ((XApp1 as any).v2.tweet as ReturnType<typeof vi.fn>).mock.calls[0][0];
+        expect(tweetCallArgs.text).toBe('Hello Real API!');
+        expect(tweetCallArgs.media).toBeDefined();
+        
+        // 返信されたURLの末尾が XApp1 用の mock_tweet_id_1 になっているかを検証
+        expect(mockInteraction.channel.send).toHaveBeenCalledTimes(1);
+        const sendArg = mockInteraction.channel.send.mock.calls[0][0];
+        expect(sendArg).toMatch(/status\/mock_tweet_id_1$/); 
     });
 });
