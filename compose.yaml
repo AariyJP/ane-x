@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nrt.vultrcr.com/anet/ane-x:latest
+    image: ghcr.io/aariyjp/ane-x:latest
     container_name: ane-x
     env_file:
       - .env
