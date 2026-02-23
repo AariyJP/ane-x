@@ -7,13 +7,14 @@ on:
       - labeled
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
   contents: write
 
 jobs:
-  auto-approve-and-merge:
+  auto-approve:
     runs-on: ubuntu-slim
     if: ${{ github.event.pull_request.head.ref == 'develop' && contains(github.event.pull_request.labels.*.name, 'release') }}
     steps:
@@ -22,6 +23,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  auto-merge:
+    runs-on: ubuntu-slim
+    needs: auto-approve
+    if: ${{ github.event.pull_request.head.ref == 'develop' && contains(github.event.pull_request.labels.*.name, 'release') }}
+    steps:
       - name: Merge PR
         run: gh pr merge --merge "${{ github.event.pull_request.html_url }}"
         env:
